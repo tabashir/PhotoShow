@@ -25,6 +25,7 @@ readParam() {
 dockerImageName='photoshow'
 dockerContainerName='photoshow-demo'
 dockerOpt=""
+dockerVols='-v /local/docker/volumes/photoshow/photos:/opt/PhotoShow/Photos -v /local/docker/volumes/photoshow/generated:/opt/PhotoShow/generated'
 
 if [ $# -ne 0 ]; then
 	readParam $*
@@ -47,12 +48,12 @@ fi
 docker stop ${dockerContainerName}
 sleep 5
 docker rm ${dockerContainerName}
-docker run --name ${dockerContainerName} -p 8080:80 -p 2222:22 -d -i -t ${dockerImageName}
+docker run --name ${dockerContainerName} ${dockerVols} -p 50090:80 -p 2222:22 -d -i -t ${dockerImageName}
 
 if [ $# -eq 0 ]; then
     clear
     echo 'PhotoShow is running ! To stop it run: docker stop '${dockerContainerName}
-    echo 'Connect to http://localhost:8080/'
+    echo 'Connect to http://localhost:50090/'
     echo "SSH: ssh -i ${dockerDir}/photoshow.key -p 2222 root@localhost"
 else
     echo 'PhotoShow fail to start'

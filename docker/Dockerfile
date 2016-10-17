@@ -16,12 +16,17 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -yq \
 	php5-fpm \
 	php5-gd \
 	libgd2-xpm \
+	imagemagick \
+	php5-ffmpeg \
+	ffmpeg \
 	supervisor
     
 RUN git clone https://github.com/thibaud-rohmer/PhotoShow.git /var/www/PhotoShow
 RUN cd /var/www/PhotoShow && sed -i -e 's/$config->photos_dir.\+/$config->photos_dir = "\/opt\/PhotoShow\/Photos";/' config.php
 RUN cd /var/www/PhotoShow && sed -i -e 's/$config->ps_generated.\+/$config->ps_generated = "\/opt\/PhotoShow\/generated";/' config.php
-    
+RUN cd /var/www/PhotoShow && sed -i -e 's#//$config->timezone.*#$config->timezone = "Europe/London";#' config.php 
+RUN cd /var/www/PhotoShow && sed -i -e 's#//$config->imagemagick_path.*#$config->imagemagick_path = "/usr/bin/convert";\n?>#' config.php 
+
 RUN sed -i -e 's/^\(\[supervisord\]\)$/\1\nnodaemon=true/' /etc/supervisor/supervisord.conf
 ADD supervisor-photoshow.conf /etc/supervisor/conf.d/photoshow.conf
 
