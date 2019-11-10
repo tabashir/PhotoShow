@@ -1,6 +1,7 @@
 #!/bin/bash
 
 which docker
+
 if [ $? -ne 0 ]; then
 	echo 'You need to install docker !'
 	exit 1
@@ -8,18 +9,20 @@ fi
 
 help() {
 	echo $0" build and run a PhotoShow docker container"
-	echo "Usage: "$0" [forcebuild|help]"
+	echo "Usage: [forcebuild|help]"
 	exit 0
 }
 
 readParam() {
-	if [ $# -ne 1 ] || [ "$1" == 'help' ]; then
+
+	if [ "$#" -ne "1" ] || [ "$1" == 'help' ] ; then
 		help
 	fi
 
-	if [ "$1" == 'forcebuild' ]; then
+	if [ "$1" == 'forcebuild' ] ; then
 		dockerOpt="--no-cache"
 	fi
+
 }
 
 dockerImageName='photoshow'

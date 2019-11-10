@@ -1,4 +1,4 @@
-FROM debian:wheezy
+FROM debian:jessie
 MAINTAINER Anthony Prades <toony.github@chezouam.net>
 
 RUN apt-get update
